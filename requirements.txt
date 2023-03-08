@@ -1,0 +1,4 @@
+astral==3.2
+pytz==2022.7.1
+uvicorn
+fastapi
