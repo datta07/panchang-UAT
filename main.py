@@ -4,7 +4,7 @@ import time
 
 app=FastAPI()
 
-#http://127.0.0.1:8000/panchang?date=28-07-2000&alt=0&lng=16.015066&lat=80.825353
+#http://127.0.0.1:8000/panchang?date=28-07-2000&alt=0&lng=80.825353&lat=16.015066
 #uvicorn main:app --host 0.0.0.0 --port 10000
 @app.get("/panchang")
 def panchang(date=time.strftime("%d-%m-%Y"),lat="23.1823900",lng="75.7764300",alt="0.494"):

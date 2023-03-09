@@ -66,8 +66,16 @@ class Panchang:
 
 	def calMoon(self):
 		l = astral.LocationInfo('Custom Name', 'My Region', self.tz_name, self.latitude, self.longitude)
-		s = astral.moon.moonrise(l.observer, date=self.for_date)
-		self.data["moonrise"]={"time":str(s.astimezone(self.tz)),"timestamp":s.timestamp()}
+		
+		try:
+			s = astral.moon.moonrise(l.observer, date=self.for_date)
+			self.data["moonrise"]={"time":str(s.astimezone(self.tz)),"timestamp":s.timestamp()}
+		except Exception:
+			try:
+				s = astral.moon.moonrise(l.observer, date=self.for_date+timedelta(days=1))
+				self.data["moonrise"]={"time":str(s.astimezone(self.tz)),"timestamp":s.timestamp()}
+			except Exception:
+				self.data["moonset"]=None
 		try:
 			s = astral.moon.moonset(l.observer, date=self.for_date)
 		except Exception:
@@ -244,3 +252,5 @@ class Panchang:
 				"end":{"time":datetime.fromtimestamp(i[1]).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":i[1]}
 				})
 
+'''pan=Panchang(17,7,2023,13.6833300,79.3500000,0.858,'Asia/Kolkata')
+print(pan.data)'''
