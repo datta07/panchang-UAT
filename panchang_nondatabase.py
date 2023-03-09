@@ -62,7 +62,7 @@ class Panchang:
 		self.data["dinamana"]=seconds_to_hrs(self.data["sunset"]["timestamp"]-self.data["sunrise"]["timestamp"])
 		self.data["ratrimana"]=seconds_to_hrs(s1['sunrise'].timestamp()-self.data["sunset"]["timestamp"])
 		rt1=(self.data["sunrise"]["timestamp"]+self.data["sunset"]["timestamp"])/2
-		self.data["madhyahna"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["madhyahna"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
 
 	def calMoon(self):
 		l = astral.LocationInfo('Custom Name', 'My Region', self.tz_name, self.latitude, self.longitude)
@@ -94,8 +94,8 @@ class Panchang:
 		rt1=t1+(t2-t1)/15*part
 		rt2=t1+(t2-t1)/15*(part+1)
 		self.data["bramhaMuhrat"]={}
-		self.data["bramhaMuhrat"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["bramhaMuhrat"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["bramhaMuhrat"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["bramhaMuhrat"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def abhijit(self):
 		if self.data["weekday"]==3:
@@ -109,8 +109,8 @@ class Panchang:
 		rt1=t1+(t2-t1)/15*part
 		rt2=t1+(t2-t1)/15*(part+1)
 		self.data["abhijit"]={}
-		self.data["abhijit"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["abhijit"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["abhijit"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["abhijit"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def godhuli(self):
 		t1=self.data["sunset"]["timestamp"]
@@ -121,8 +121,8 @@ class Panchang:
 		rt2=t1+(t2-t1)/15*(part+1)
 		rt2-=((t2-t1)/30)
 		self.data["godhuli"]={}
-		self.data["godhuli"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["godhuli"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["godhuli"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["godhuli"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 	
 	def pratahSandhya(self):
 		t1=self.data["sunset"]["timestamp"]
@@ -134,8 +134,8 @@ class Panchang:
 		rt2=t1+(t2-t1)/15*(part+1)
 		
 		self.data["pratahSandhya"]={}
-		self.data["pratahSandhya"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["pratahSandhya"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["pratahSandhya"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["pratahSandhya"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def vijayMuhurat(self):
 		t1=self.data["sunrise"]["timestamp"]
@@ -148,8 +148,8 @@ class Panchang:
 		rt2-=((t2-t1)/64)
 				
 		self.data["vijayMuhurat"]={}
-		self.data["vijayMuhurat"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["vijayMuhurat"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["vijayMuhurat"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["vijayMuhurat"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def sayahnaSandhya(self):
 		t1=self.data["sunset"]["timestamp"]
@@ -161,8 +161,8 @@ class Panchang:
 		rt2+=((t2-t1)/30)		
 
 		self.data["sayahnaSandhya"]={}
-		self.data["sayahnaSandhya"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["sayahnaSandhya"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["sayahnaSandhya"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["sayahnaSandhya"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def nishitaMuhurta(self):
 		t1=self.data["sunset"]["timestamp"]
@@ -173,8 +173,8 @@ class Panchang:
 		rt2=t1+(t2-t1)/15*(part+1)	
 
 		self.data["nishitaMuhurta"]={}
-		self.data["nishitaMuhurta"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["nishitaMuhurta"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["nishitaMuhurta"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["nishitaMuhurta"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def rahuKal(self):
 		t1=self.data["sunrise"]["timestamp"]
@@ -186,8 +186,8 @@ class Panchang:
 		rt2=t1+(t2-t1)/8*(part+1)	
 
 		self.data["rahuKal"]={}
-		self.data["rahuKal"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["rahuKal"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["rahuKal"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["rahuKal"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def gulikaiKal(self):
 		t1=self.data["sunrise"]["timestamp"]
@@ -199,8 +199,8 @@ class Panchang:
 		rt2=t1+(t2-t1)/8*(part+1)	
 
 		self.data["gulikaiKal"]={}
-		self.data["gulikaiKal"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["gulikaiKal"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["gulikaiKal"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["gulikaiKal"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def yamaganda(self):
 		t1=self.data["sunrise"]["timestamp"]
@@ -212,8 +212,8 @@ class Panchang:
 		rt2=t1+(t2-t1)/8*(part+1)	
 
 		self.data["yamaganda"]={}
-		self.data["yamaganda"]["start"]={"time":datetime.fromtimestamp(rt1).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
-		self.data["yamaganda"]["end"]={"time":datetime.fromtimestamp(rt2).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
+		self.data["yamaganda"]["start"]={"time":datetime.fromtimestamp(rt1).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt1}
+		self.data["yamaganda"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 
 	def durMuhurtam(self):
 		t1=self.data["sunrise"]["timestamp"]
@@ -248,8 +248,8 @@ class Panchang:
 		
 		for i in hrs:
 			self.data["durMuhurtam"].append({
-				"start":{"time":datetime.fromtimestamp(i[0]).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":i[0]},
-				"end":{"time":datetime.fromtimestamp(i[1]).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":i[1]}
+				"start":{"time":datetime.fromtimestamp(i[0]).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":i[0]},
+				"end":{"time":datetime.fromtimestamp(i[1]).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":i[1]}
 				})
 
 '''pan=Panchang(17,7,2023,13.6833300,79.3500000,0.858,'Asia/Kolkata')
