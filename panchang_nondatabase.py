@@ -125,8 +125,8 @@ class Panchang:
 		self.data["godhuli"]["end"]={"time":datetime.fromtimestamp(rt2).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":rt2}
 	
 	def pratahSandhya(self):
-		t1=self.data["sunset"]["timestamp"]
-		t2=self.data["next_sunrise"]["timestamp"]
+		t1=self.data["prev_sunset"]["timestamp"]
+		t2=self.data["sunrise"]["timestamp"]
 
 		part=14
 		rt1=t1+(t2-t1)/15*part
