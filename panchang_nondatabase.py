@@ -2,6 +2,7 @@ from datetime import date, datetime, timezone, timedelta
 import astral, astral.sun, astral.moon
 import pytz
 import time
+from panchang_core import *
 
 def seconds_to_hrs(seconds):
 	if seconds is not None:
@@ -47,6 +48,7 @@ class Panchang:
 		self.gulikaiKal()
 		self.yamaganda()
 		self.durMuhurtam()
+		self.panchang_core()
 
 	def calSun(self):
 		l = astral.LocationInfo('Custom Name', 'My Region', self.tz_name, self.latitude, self.longitude)
@@ -252,5 +254,29 @@ class Panchang:
 				"end":{"time":datetime.fromtimestamp(i[1]).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":i[1]}
 				})
 
-'''pan=Panchang(17,7,2023,13.6833300,79.3500000,0.858,'Asia/Kolkata')
+	def panchang_core(self):
+		year,month,date=2023,3,13
+		lat,lon,alt=13.6833300,79.3500000,0.858
+		loc=(lon,lat,alt)
+
+		tdy = datetime(year,month,date).timestamp()
+		tmr = (datetime(year,month,date)+timedelta(days=1)).timestamp()
+
+
+		today_jd=swe.julday(year,month,date, 0.0)
+
+		arr=tithi_paksha(today_jd-1,today_jd-1)+tithi_paksha(today_jd,today_jd)+tithi_paksha(today_jd+1,today_jd+1)
+		self.data["tithiPaksha"]=summerize(arr,tdy,tmr)
+
+		arr=nakshatra(today_jd-1,today_jd-1)+nakshatra(today_jd,today_jd)+nakshatra(today_jd+1,today_jd+1)
+		self.data["nakshatra"]=summerize(arr,tdy,tmr)
+
+		arr=yoga(today_jd-1,today_jd-1)+yoga(today_jd,today_jd)+yoga(today_jd+1,today_jd+1)
+		self.data["yoga"]=summerize(arr,tdy,tmr)
+
+		arr=karana(today_jd-1,today_jd-1)+karana(today_jd,today_jd)+karana(today_jd+1,today_jd+1)
+		self.data["karana"]=summerize(arr,tdy,tmr)
+
+
+'''pan=Panchang(13,3,2023,13.6833300,79.3500000,0.858,'Asia/Kolkata')
 print(pan.data)'''
