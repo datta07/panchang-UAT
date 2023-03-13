@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone, timedelta
+from datetime import  datetime,date, timezone, timedelta
 import astral, astral.sun, astral.moon
 import pytz
 import time
@@ -22,12 +22,13 @@ def seconds_to_hrs(seconds):
 	return '-'
 
 class Panchang:
-	def __init__(self,dat,month,year, lat,lon,alt,tz='Asia/Kolkata'):
+	def __init__(self,dat,month,year, lat,lon,alt,tz):
 		self.latitude = lat
 		self.longitude = lon
 		self.altitude = alt
 		self.tz = pytz.timezone(tz)
 		self.tz_name = tz
+		self.year,self.month,self.date = year,month,dat
 		self.for_date = date(year, month, dat)
 		self.data={}
 
@@ -254,29 +255,34 @@ class Panchang:
 				"end":{"time":datetime.fromtimestamp(i[1]).astimezone(self.tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":i[1]}
 				})
 
+	def offset(self):
+		offset = self.tz.utcoffset(datetime.utcnow())
+		offset_seconds = (offset.days * 86400) + offset.seconds
+		offset_hours = offset_seconds / 3600
+		return offset_hours
+
 	def panchang_core(self):
-		year,month,date=2023,3,13
-		lat,lon,alt=13.6833300,79.3500000,0.858
-		loc=(lon,lat,alt)
-
-		tdy = datetime(year,month,date).timestamp()
-		tmr = (datetime(year,month,date)+timedelta(days=1)).timestamp()
-
-
-		today_jd=swe.julday(year,month,date, 0.0)
+		#year,month,date=self.year,self.month,self.date
+		loc=(self.latitude,self.longitude,self.altitude)
+		#print(self.tz.utcoffset(datetime.utcnow()).total_seconds()/3600)
+		offset=self.offset()
+		tdy = (datetime(self.year,self.month,self.date)+timedelta(hours=-1*offset)).timestamp()
+		tmr = (datetime(self.year,self.month,self.date)+timedelta(days=1,hours=-1*offset)).timestamp()
+		
+		today_jd=swe.julday(self.year,self.month,self.date, -1*offset)
 
 		arr=tithi_paksha(today_jd-1,today_jd-1)+tithi_paksha(today_jd,today_jd)+tithi_paksha(today_jd+1,today_jd+1)
-		self.data["tithiPaksha"]=summerize(arr,tdy,tmr)
+		self.data["tithiPaksha"]=summerize(arr,tdy,tmr,self.tz)
 
 		arr=nakshatra(today_jd-1,today_jd-1)+nakshatra(today_jd,today_jd)+nakshatra(today_jd+1,today_jd+1)
-		self.data["nakshatra"]=summerize(arr,tdy,tmr)
-
+		self.data["nakshatra"]=summerize(arr,tdy,tmr,self.tz)
+		
 		arr=yoga(today_jd-1,today_jd-1)+yoga(today_jd,today_jd)+yoga(today_jd+1,today_jd+1)
-		self.data["yoga"]=summerize(arr,tdy,tmr)
+		self.data["yoga"]=summerize(arr,tdy,tmr,self.tz)
 
 		arr=karana(today_jd-1,today_jd-1)+karana(today_jd,today_jd)+karana(today_jd+1,today_jd+1)
-		self.data["karana"]=summerize(arr,tdy,tmr)
+		self.data["karana"]=summerize(arr,tdy,tmr,self.tz)
 
 
-'''pan=Panchang(13,3,2023,13.6833300,79.3500000,0.858,'Asia/Kolkata')
-print(pan.data)'''
+pan=Panchang(13,3,2023,40.7142700,-74.0059700,0.858,'America/New_York')
+print(pan.data)

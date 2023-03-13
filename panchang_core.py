@@ -27,9 +27,6 @@ def sunrise(jd,loc):
     result = swe.rise_trans(jd , swe.SUN, swe.CALC_RISE | swe.BIT_HINDU_RISING, loc ,1013.25, 15, swe.FLG_SWIEPH)
     rise = result[1][0]
     return rise
-    tm=swe.revjul(rise)
-    dt1=datetime.datetime.strptime(str(2023)+' '+str(3)+' '+str(12), '%Y %m %d')+timedelta(hours=tm[-1])
-    return [rise,dt1.astimezone(pytz.timezone("Asia/Kolkata")).strftime('%d/%m/%Y %I:%M:%S %p')]
 
 def moon_phase(jd):
     solar_long = swe.calc_ut(jd, swe.SUN, flags = swe.FLG_SWIEPH)[0]
@@ -90,7 +87,6 @@ def nakshatra(sunrise_jd,today_jd):
       approx_end = inverse_lagrange(offsets, longitudes, nak * 360 / 27)
       ends = (sunrise_jd - today_jd + approx_end) * 24 
       ans.append([nakshatras[nak-1],to_timestamp(today_jd+ends)])
-    
     return ans
 
 def yoga(sunrise_jd,today_jd):
@@ -190,7 +186,7 @@ def suryanakshatra(sunrise_jd,today_jd):
 
 
 
-def summerize(arr,tdy,tmr):
+def summerize(arr,tdy,tmr,tz):
   temp={}
   for i in arr:
     temp[i[0]]=i[1]
@@ -200,17 +196,18 @@ def summerize(arr,tdy,tmr):
   
   ans={}
   if len(arr)==1:
-    ans[arr[0][0]]={"start":None,"end":{"time":datetime.datetime.fromtimestamp(arr[0][1]).astimezone(pytz.timezone('Asia/Kolkata')).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":arr[0][1]}}
+    ans[arr[0][0]]={"start":None,"end":{"time":datetime.fromtimestamp(arr[0][1]).astimezone(tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":arr[0][1]}}
   else:
     for no in range(1,len(arr)):
-      if (arr[no][1]>tdy) and (arr[no-1][1]>tmr):
+      if (arr[no][1]>tmr) and (arr[no-1][1]>tmr):
         continue
-      elif (arr[no][1]<tdy):
+      elif (arr[no][1]<tdy) and (arr[no-1][1]<tdy):
         continue
-      ans[arr[no][0]]={"start":{"time":datetime.fromtimestamp(arr[no-1][1]).astimezone(pytz.timezone('Asia/Kolkata')).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":arr[no-1][1]},
-                        "end":{"time":datetime.fromtimestamp(arr[no][1]).astimezone(pytz.timezone('Asia/Kolkata')).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":arr[no][1]}}
+      ans[arr[no][0]]={"start":{"time":datetime.fromtimestamp(arr[no-1][1]).astimezone(tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":arr[no-1][1]},
+                        "end":{"time":datetime.fromtimestamp(arr[no][1]).astimezone(tz).strftime('%d/%m/%Y %I:%M:%S %p'),"timestamp":arr[no][1]}}
 
   return ans
 
 def summerize2(arr):
     return arr[0][0]
+
